@@ -241,3 +241,25 @@ func ToSnakeCase(str string) string {
 
 	return buf.String()
 }
+
+// SafeClear data use "****" safe clear.
+func SafeClear(str string) string {
+	len := len(str)
+	if len == 0 {
+		return ""
+	}
+
+	safe := "****"
+	switch {
+	case len == 1:
+		return safe
+	case len == 2:
+		return str[:1] + safe
+	case len <= 4:
+		return str[:1] + safe + str[len-1:]
+	case len <= 12:
+		return str[:2] + safe + str[len-2:]
+	default:
+		return str[:4] + safe + str[len-4:]
+	}
+}

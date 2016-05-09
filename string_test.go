@@ -20,6 +20,30 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
+func TestSafeClear(t *testing.T) {
+	testCases := []struct {
+		str  string
+		want string
+	}{
+		{"", ""},
+		{" ", "****"},
+		{"1", "****"},
+		{"12", "1****"},
+		{"123", "1****3"},
+		{"1234", "1****4"},
+		{"12345", "12****45"},
+		{"1234567", "12****67"},
+		{"1234567890AB", "12****AB"},
+		{"1234567890ABCDEFG", "1234****DEFG"},
+	}
+	for _, v := range testCases {
+		if got := SafeClear(v.str); got != v.want {
+			t.Errorf("SafeClear:\n Except => %s \n Got => %s \n", v.want, got)
+		}
+	}
+
+}
+
 func TestIsLetter(t *testing.T) {
 	if IsLetter('1') {
 		t.Errorf("IsLetter:\n Expect => %v\n Got => %v\n", false, true)
