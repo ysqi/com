@@ -14,16 +14,33 @@
 
 package com
 
-// PowInt is int type of math.Pow function. 
+import "math"
+
+// PowInt is int type of math.Pow function.
 func PowInt(x int, y int) int {
 	if y <= 0 {
 		return 1
 	} else {
-		if y % 2 == 0 {
+		if y%2 == 0 {
 			sqrt := PowInt(x, y/2)
 			return sqrt * sqrt
 		} else {
 			return PowInt(x, y-1) * x
 		}
 	}
+}
+
+// Round return float64  to the nearest whole number
+func Round(val float64) (newVal float64) {
+	_, div := math.Modf(val)
+	if div >= 0.0 {
+		if div >= 0.5 {
+			return math.Ceil(val)
+		}
+		return math.Floor(val)
+	}
+	if div >= -0.5 {
+		return math.Ceil(val)
+	}
+	return math.Floor(val)
 }

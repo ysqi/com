@@ -42,3 +42,28 @@ func BenchmarkPow(b *testing.B) {
 		PowInt(x, y)
 	}
 }
+
+func Test_Round(t *testing.T) {
+	Convey("Round float64", t, func() {
+		testCaess := map[float64]float64{
+			+0.00: 0.00,
+			+0.50: 1.00,
+			-0.50: 0.00,
+			+1.23: 1.00,
+			-1.23: -1.00,
+			+1.25: 1,
+			-1.25: -1.00,
+			+2.00: 2,
+			-2.00: -2.00,
+			25.00: 25,
+			25.55: 26.00,
+
+			123.555555:          124,
+			123.333333333333333: 123,
+		}
+		for v, want := range testCaess {
+			got := Round(v)
+			So(got, ShouldEqual, want)
+		}
+	})
+}
