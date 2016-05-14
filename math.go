@@ -44,3 +44,17 @@ func Round(val float64) (newVal float64) {
 	}
 	return math.Floor(val)
 }
+
+// RoundFloat Return rounded version of x with prec precision.
+func RoundFloat(val float64, places int) float64 {
+	var round float64
+	pow := math.Pow(10, float64(places))
+	digit := pow * val
+	_, div := math.Modf(digit)
+	if div >= 0.5 {
+		round = math.Ceil(digit)
+	} else {
+		round = math.Floor(digit)
+	}
+	return round / pow
+}

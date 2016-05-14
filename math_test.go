@@ -67,3 +67,29 @@ func Test_Round(t *testing.T) {
 		}
 	})
 }
+
+func Test_RoundFloat(t *testing.T) {
+	Convey("RoundFloat float64", t, func() {
+		testCaess := map[float64]float64{
+			+0.00:  0.00,
+			+0.50:  0.50,
+			-0.50:  -0.50,
+			+1.23:  1.23,
+			-1.23:  -1.23,
+			+1.25:  1.25,
+			-1.25:  -1.25,
+			+2.00:  2,
+			-2.00:  -2.00,
+			25.00:  25.00,
+			25.555: 25.56,
+
+			123.555555:          123.56,
+			123.333333333333333: 123.33,
+			-1.2456:             -1.25,
+		}
+		for v, want := range testCaess {
+			got := RoundFloat(v, 2)
+			So(got, ShouldEqual, want)
+		}
+	})
+}
