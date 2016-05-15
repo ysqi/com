@@ -93,3 +93,89 @@ func Test_RoundFloat(t *testing.T) {
 		}
 	})
 }
+
+func TestDoArithmetic(t *testing.T) {
+
+	Convey("DoArithmetic", t, func() {
+		for _, this := range []struct {
+			a      interface{}
+			b      interface{}
+			op     rune
+			expect interface{}
+		}{
+			{3, 2, '+', int64(5)},
+			{3, 2, '-', int64(1)},
+			{3, 2, '*', int64(6)},
+			{3, 2, '/', int64(1)},
+			{3.0, 2, '+', float64(5)},
+			{3.0, 2, '-', float64(1)},
+			{3.0, 2, '*', float64(6)},
+			{3.0, 2, '/', float64(1.5)},
+			{3, 2.0, '+', float64(5)},
+			{3, 2.0, '-', float64(1)},
+			{3, 2.0, '*', float64(6)},
+			{3, 2.0, '/', float64(1.5)},
+			{3.0, 2.0, '+', float64(5)},
+			{3.0, 2.0, '-', float64(1)},
+			{3.0, 2.0, '*', float64(6)},
+			{3.0, 2.0, '/', float64(1.5)},
+			{uint(3), uint(2), '+', uint64(5)},
+			{uint(3), uint(2), '-', uint64(1)},
+			{uint(3), uint(2), '*', uint64(6)},
+			{uint(3), uint(2), '/', uint64(1)},
+			{uint(3), 2, '+', uint64(5)},
+			{uint(3), 2, '-', uint64(1)},
+			{uint(3), 2, '*', uint64(6)},
+			{uint(3), 2, '/', uint64(1)},
+			{3, uint(2), '+', uint64(5)},
+			{3, uint(2), '-', uint64(1)},
+			{3, uint(2), '*', uint64(6)},
+			{3, uint(2), '/', uint64(1)},
+			{uint(3), -2, '+', int64(1)},
+			{uint(3), -2, '-', int64(5)},
+			{uint(3), -2, '*', int64(-6)},
+			{uint(3), -2, '/', int64(-1)},
+			{-3, uint(2), '+', int64(-1)},
+			{-3, uint(2), '-', int64(-5)},
+			{-3, uint(2), '*', int64(-6)},
+			{-3, uint(2), '/', int64(-1)},
+			{uint(3), 2.0, '+', float64(5)},
+			{uint(3), 2.0, '-', float64(1)},
+			{uint(3), 2.0, '*', float64(6)},
+			{uint(3), 2.0, '/', float64(1.5)},
+			{3.0, uint(2), '+', float64(5)},
+			{3.0, uint(2), '-', float64(1)},
+			{3.0, uint(2), '*', float64(6)},
+			{3.0, uint(2), '/', float64(1.5)},
+			{0, 0, '+', 0},
+			{0, 0, '-', 0},
+			{0, 0, '*', 0},
+			{"foo", "bar", '+', "foobar"},
+			{3, 0, '/', false},
+			{3.0, 0, '/', false},
+			{3, 0.0, '/', false},
+			{uint(3), uint(0), '/', false},
+			{3, uint(0), '/', false},
+			{-3, uint(0), '/', false},
+			{uint(3), 0, '/', false},
+			{3.0, uint(0), '/', false},
+			{uint(3), 0.0, '/', false},
+			{3, "foo", '+', false},
+			{3.0, "foo", '+', false},
+			{uint(3), "foo", '+', false},
+			{"foo", 3, '+', false},
+			{"foo", "bar", '-', false},
+			{3, 2, '%', false},
+		} {
+
+			result, err := DoArithmetic(this.a, this.b, this.op)
+			if b, ok := this.expect.(bool); ok && !b {
+				So(err, ShouldNotEqual, nil)
+			} else {
+				So(err, ShouldBeNil)
+				So(result, ShouldEqual, this.expect)
+			}
+		}
+	})
+
+}
