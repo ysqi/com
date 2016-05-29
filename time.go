@@ -133,6 +133,5 @@ func FirstDayOfMonth(t time.Time) time.Time {
 
 // FirstDayOfYear  The First day of this year: YYYY.01.01 .
 func FirstDayOfYear(t time.Time) time.Time {
-	y, m, _ := t.Date()
-	return time.Date(y, 1, 1, 0, 0, 0, 0, t.Location())
+	return time.Date(t.Year(), 1, 1, 0, 0, 0, 0, t.Location())
 }
