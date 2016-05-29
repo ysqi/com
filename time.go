@@ -113,3 +113,26 @@ func DateParse(dateString, format string) (time.Time, error) {
 	format = replacer.Replace(format)
 	return time.ParseInLocation(format, dateString, time.Local)
 }
+
+// FirstDayOfWeek  The week First day is Monday.
+func FirstDayOfWeek(t time.Time) time.Time {
+	y, m, d := t.Date()
+	t = time.Date(y, m, d, 0, 0, 0, 0, t.Location())
+	week := t.Weekday()
+	if week == time.Sunday {
+		return t.AddDate(0, 0, -6)
+	}
+	return t.AddDate(0, 0, -int(week)+1)
+}
+
+// FirstDayOfMonth  The First day of this month .
+func FirstDayOfMonth(t time.Time) time.Time {
+	y, m, _ := t.Date()
+	return time.Date(y, m, 1, 0, 0, 0, 0, t.Location())
+}
+
+// FirstDayOfYear  The First day of this year: YYYY.01.01 .
+func FirstDayOfYear(t time.Time) time.Time {
+	y, m, _ := t.Date()
+	return time.Date(y, 1, 1, 0, 0, 0, 0, t.Location())
+}
