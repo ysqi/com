@@ -63,6 +63,21 @@ func (f StrTo) String() string {
 	return ""
 }
 
+// Bool returns the boolean value represented by the string.
+//
+// It accepts 1, 1.0, t, T, TRUE, true, True, YES, yes, Yes,Y, y, ON, on, On,
+// 0, 0.0, f, F, FALSE, false, False, NO, no, No, N,n, OFF, off, Off.
+// Any other value returns an error.
+func (f StrTo) Bool() (bool, error) {
+	switch f {
+	case "1", "t", "T", "true", "TRUE", "True", "YES", "yes", "Yes", "Y", "y", "ON", "on", "On":
+		return true, nil
+	case "0", "f", "F", "false", "FALSE", "False", "NO", "no", "No", "N", "n", "OFF", "off", "Off":
+		return false, nil
+	}
+	return false, fmt.Errorf("invalid bool value %q", f)
+}
+
 // Convert any type to string.
 func ToStr(value interface{}, args ...int) (s string) {
 	switch v := value.(type) {
