@@ -14,7 +14,10 @@
 
 package com
 
-import "regexp"
+import (
+	"net"
+	"regexp"
+)
 
 const (
 	regex_email_pattern        = `(?i)[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,6}`
@@ -23,18 +26,21 @@ const (
 		`@(?:[A-Z0-9](?:[A-Z0-9-]*[A-Z0-9])?\.)+` +
 		`[A-Z0-9](?:[A-Z0-9-]*[A-Z0-9])?`
 	regex_url_pattern = `(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?`
+	regex_ip_pattern  = `^((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)\\.){3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)$`
 )
 
 var (
 	regex_email        *regexp.Regexp
 	regex_strict_email *regexp.Regexp
 	regex_url          *regexp.Regexp
+	regex_ip           *regexp.Regexp
 )
 
 func init() {
 	regex_email = regexp.MustCompile(regex_email_pattern)
 	regex_strict_email = regexp.MustCompile(regex_strict_email_pattern)
 	regex_url = regexp.MustCompile(regex_url_pattern)
+	regex_ip = regexp.MustCompile(regex_ip_pattern)
 }
 
 // validate string is an email address, if not return false
@@ -53,4 +59,16 @@ func IsEmailRFC(email string) bool {
 // simple validation can match 99% cases
 func IsUrl(url string) bool {
 	return regex_url.MatchString(url)
+}
+
+// validate string is an ip address. if not return false.
+func IsIP(ip string) bool {
+	p := net.ParseIP(ip)
+	if p == nil {
+		return false
+	}
+	if p.To4() == nil && p.To16() == nil {
+		return false
+	}
+	return true
 }
